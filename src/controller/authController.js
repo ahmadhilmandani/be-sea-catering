@@ -6,14 +6,16 @@ const jwt = require('jsonwebtoken')
 const registerController = async (req, res, next) => {
   const connection = await connectDb()
   try {
-    const { name, email, password } = req.body
+    const { name, email, password, address, alergies } = req.body
 
-    const result = await registerRepositories(name, email, password)
+    const result = await registerRepositories(name, email, password, address, alergies)
 
     await connection.commit()
 
-    return res.status(201).send({ 'data': { 'inserted_id': result.insertId } })
-
+    req.statusCode = 201
+    req.result = result.insertId
+    next()
+    
   } catch (error) {
     await connection.rollback()
     next(error)
@@ -47,7 +49,8 @@ const loginController = async (req, res, next) => {
 
     if (getUser) {
       result['token'] = token
-      return res.status(200).send({ 'data': result })
+      req.result = result
+      next()
     }
 
   } catch (error) {

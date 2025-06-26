@@ -1,7 +1,7 @@
 const connectDb = require("../config/db")
 const bcrypt = require('bcrypt')
 
-const registerRepositories = async (name, email, password) => {
+const registerRepositories = async (name, email, password, address, alergies) => {
   const connection = await connectDb()
   const currentDatetime = new Date()
 
@@ -15,11 +15,15 @@ const registerRepositories = async (name, email, password) => {
           name, 
           email, 
           password,
+          address,
+          alergies,
           is_admin,
           created_at
         )
       VALUES
         (
+          ?, 
+          ?, 
           ?,
           ?,
           ?,
@@ -31,7 +35,7 @@ const registerRepositories = async (name, email, password) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds)
 
     if (hashedPassword) {
-      const [result] = await connection.execute(sql_statement, [name, email, hashedPassword, 0, currentDatetime])
+      const [result] = await connection.execute(sql_statement, [name, email, hashedPassword, address, alergies, 0, currentDatetime])
 
       return result
     }
@@ -42,7 +46,7 @@ const registerRepositories = async (name, email, password) => {
 }
 
 
-const loginRepositories = async (email, password) => {
+const   loginRepositories = async (email, password) => {
   const connection = await connectDb()
 
   try {
@@ -62,7 +66,7 @@ const loginRepositories = async (email, password) => {
       return []
     }
 
-    const match = await bcrypt.compare(password, result[0].password);
+    const match = await bcrypt.compare(password, result[0].password)
     if (match) {
       return result
     }
