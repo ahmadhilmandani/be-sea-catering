@@ -10,6 +10,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 const authRoute = require('./src/routes/authRoute.js')
+const testimoniRouth = require('./src/routes/testimoniRoute.js'
+
+)
 const { responseSuccesHandler } = require('./src/middleware/responseSuccesHandler.js')
 const { log } = require('./src/middleware/log')
 
@@ -19,6 +22,8 @@ const { errorHanlder } = require('./src/middleware/errorHanlder')
 
 app.use(log)
 app.use('/api/auth', authRoute)
+app.use('/api/testimoni', testimoniRouth)
+
 app.use(responseSuccesHandler)
 app.use(errorHanlder)
 
