@@ -134,9 +134,8 @@ const getOrderMealUnregistered = async (phone_number, getLimit, isSend) => {
     let sql_statement = `
       SELECT
         om.id_order_meal AS om_id_order_meal,
-        om.id_user AS om_id_user,
         om.name AS om_name,
-        om.address AS om_adress,
+        om.address AS om_address,
         om.phone_number AS om_phone_number,
         om.id_delivery_type AS om_id_delivery_type,
         devt.day AS devt_day,
@@ -175,33 +174,66 @@ const getOrderMealUnregistered = async (phone_number, getLimit, isSend) => {
       sqlParams.push(getLimit)
     }
 
+    const [res] = await connection.execute(sql_statement, sqlParams)
+    if (res.length > 0) {      
+      let resp = [
+        {
+          'user': {
+            'name': res[0].om_name,
+            'address': res[0].om_address,
+            'phone_number': res[0].om_phone_number,
+          },
+          'order_meals': []
+        }
+      ]
+      for (let index = 0; index < res.length; index++) {
+        resp[0].order_meals.push({
+          'id_order_meal': res[index].om_id_order_meal,
+          'id_food_menu': res[index].om_id_food_menu,
+          'name': res[index].fm_name,
+          'price': res[index].fm_price,
+          'description': res[index].fm_fm_description,
+          'delivery': {
+            'day': res[index].devt_day,
+            'time': res[index].devt_time_string
+          },
+          'is_send': res[index].om_is_send,
+          'diet_type': res[index].dt_name,
+          'deliver_date_schedule': res[index].om_deliver_date_schedule,
+        })
+      }
+      return resp
+    }
 
-    const res = await connection.execute(sql_statement, sqlParams)
+    return []
 
-    return res
 
   } catch (error) {
     throw new Error(error)
   }
 }
 
-const postOrderMealUnregistered = async (name, address, phone_number, id_delivery_type, id_food_menu, is_send) => {
+const postOrderMealUnregistered = async (name, address, phone_number, id_delivery_type, id_food_menu, deliver_date_schedule) => {
   const connection = await connectDb()
 
   try {
     const sql_statement = `
       INSERT INTO
-        testimonies
+        order_meal
         (
           name,
           address,
           phone_number,
           id_delivery_type,
           id_food_menu,
-          is_send
+          deliver_date_schedule,
+          is_send,
+          created_at
         )
         VALUES
         (
+          ?,
+          ?,
           ?,
           ?,
           ?,
@@ -211,7 +243,7 @@ const postOrderMealUnregistered = async (name, address, phone_number, id_deliver
         )
     `
 
-    const sqlParams = [name, address, phone_number, id_delivery_type, id_food_menu, is_send]
+    const sqlParams = [name, address, phone_number, id_delivery_type, id_food_menu, deliver_date_schedule, 0, new Date()]
 
     const res = await connection.execute(sql_statement, sqlParams)
     return res
