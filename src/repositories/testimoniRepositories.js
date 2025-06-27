@@ -13,6 +13,9 @@ const getTestimoniRepositories = async (getLimit) => {
         created_at
       FROM
         testimonies
+      ORDER BY
+        created_at
+      DESC
     `
     let sqlParams = []
     if (getLimit) {
@@ -41,17 +44,19 @@ const postTestimoniRepositories = async (name, address, star, testimoni) => {
           name,
           address,
           star,
-          testimoni  
+          testimoni,
+          created_at
         )
         VALUES
         (
           ?,
           ?,
           ?,
+          ?,
           ?
         )
     `
-    const sqlParams = [name, address, star, testimoni]
+    const sqlParams = [name, address, star, testimoni, new Date()]
 
     const res = await connection.execute(sql_statement, sqlParams)
     return res
