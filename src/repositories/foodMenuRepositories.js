@@ -35,7 +35,6 @@ const getFoodMenuRepo = async (getLimit, dietType) => {
     }
 
     const foodMenu = await connection.execute(sql_statement_food_menu, sqlParams)
-    console.log(foodMenu[0])
 
     if (foodMenu[0].length > 0) {
       let sql_statement_nutritions = `
