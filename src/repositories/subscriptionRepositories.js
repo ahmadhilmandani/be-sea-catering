@@ -4,7 +4,6 @@ const getSubsByUserIdRepositories = async (userId) => {
   const connection = await connectDb()
 
   try {
-
     let sql_statement = `
       SELECT
         s.id_subscription,
@@ -41,7 +40,7 @@ const getSubsByUserIdRepositories = async (userId) => {
 }
 
 
-const postSubsRepositories = async (userId, id_diet_type, status_subs) => {
+const postSubsRepositories = async (userId, id_diet_type, status_subs, total_bill) => {
   const connection = await connectDb()
 
   try {
@@ -52,6 +51,7 @@ const postSubsRepositories = async (userId, id_diet_type, status_subs) => {
           id_user,
           id_diet_type,
           status_subs,
+          total_bill,
           created_at
         )
         VALUES
@@ -63,7 +63,7 @@ const postSubsRepositories = async (userId, id_diet_type, status_subs) => {
         )
     `
 
-    let sqlParams = [userId, id_diet_type, status_subs, new Date()]
+    let sqlParams = [userId, id_diet_type, status_subs, total_bill, new Date()]
 
     const res = await connection.execute(sql_statement, sqlParams)
     return res

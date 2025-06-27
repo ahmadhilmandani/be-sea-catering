@@ -22,9 +22,9 @@ const postSubsController = async (req, res, next) => {
   const connection = await connectDb()
 
   try {
-    const { id_user, id_diet_type, status_subs } = req.body
+    const { id_user, id_diet_type, status_subs, total_bill } = req.body
 
-    const [res] = await postSubsRepositories(id_user, id_diet_type, status_subs)
+    const [res] = await postSubsRepositories(id_user, id_diet_type, status_subs, total_bill)
     req.result = res
     next()
   } catch (error) {
