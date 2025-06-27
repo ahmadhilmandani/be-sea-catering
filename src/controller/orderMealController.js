@@ -1,13 +1,6 @@
 const connectDb = require("../config/db.js")
 const { getOrderMealRegistered, postOrderMealRegistered, getOrderMealUnregistered, postOrderMealUnregistered } = require("../repositories/orderMealRepositories.js")
 
-
-
-// getOrderMealRegistered
-// postOrderMealRegistered
-// getOrderMealUnregistered
-// postOrderMealUnregistered
-
 const getOrderMealRegisteredC = async (req, res, next) => {
   const connection = await connectDb()
 

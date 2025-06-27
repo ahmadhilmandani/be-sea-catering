@@ -40,9 +40,9 @@ const loginController = async (req, res, next) => {
 
     const result = {
       user_id: getUser[0].id_user,
-      username: getUser[0].username,
       name: getUser[0].name,
-      email: getUser[0].email
+      email: getUser[0].email,
+      address: getUser[0].address
     }
 
     const token = jwt.sign({ user: result }, "PASSWORD", { expiresIn: 86400 })
@@ -59,4 +59,23 @@ const loginController = async (req, res, next) => {
   }
 }
 
-module.exports = { registerController, loginController }
+const getUserInfo = async (req, res, next) => {
+  const connection = await connectDb();
+
+  try {
+    const token = req.headers['authorization']
+
+    const decodeToken = jwt.verify(token.replace('Bearer ', ''), "PASSWORD")
+
+    if (token) {
+      req.result = decodeToken
+      next()
+    }
+
+  } catch (error) {
+    await connection.rollback()
+    next(error)
+  }
+}
+
+module.exports = { registerController, loginController, getUserInfo }
