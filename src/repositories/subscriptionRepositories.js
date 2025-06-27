@@ -1,0 +1,101 @@
+const connectDb = require('../config/db.js')
+
+const getSubsByUserIdRepositories = async (userId) => {
+  const connection = await connectDb()
+
+  try {
+
+    let sql_statement = `
+      SELECT
+        s.id_subscription,
+        s.id_user,
+        s.id_diet_type,
+        s.status_subs,
+        s.created_at,
+        u.name AS name,
+        u.phone_number,
+        dt.name AS diet_type_name,
+        dt.subs_diet_type_price_meal,
+        dt.description
+      FROM
+        subscriptions AS s
+      INNER JOIN
+        users AS u
+      ON
+        s.id_user = u.id_user
+      INNER JOIN
+        diet_type AS dt
+      ON
+        s.id_diet_type = dt.id_diet_type
+      WHERE
+        s.id_user = ?
+    `
+
+    let sqlParams = [userId]
+
+    const [res] = await connection.execute(sql_statement, sqlParams)
+    return res
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+
+const postSubsRepositories = async (userId, id_diet_type, status_subs) => {
+  const connection = await connectDb()
+
+  try {
+    let sql_statement = `
+      INSERT INTO
+        subscriptions
+        (
+          id_user,
+          id_diet_type,
+          status_subs,
+          created_at
+        )
+        VALUES
+        (
+          ?,
+          ?,
+          ?,
+          ?
+        )
+    `
+
+    let sqlParams = [userId, id_diet_type, status_subs, new Date()]
+
+    const res = await connection.execute(sql_statement, sqlParams)
+    return res
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+
+const updateSubsRepositories = async (id_subscription, id_diet_type, status_subs) => {
+  const connection = await connectDb()
+
+  try {
+    let sql_statement = `
+      UPDATE
+        subscriptions
+      SET
+        id_diet_type = ?,
+        status_subs = ?,
+        updated_at = ?
+      WHERE
+        id_subscription = ?
+    `
+
+    let sqlParams = [id_diet_type, status_subs, new Date(), id_subscription]
+
+    const res = await connection.execute(sql_statement, sqlParams)
+    return res
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+
+module.exports = { getSubsByUserIdRepositories, postSubsRepositories, updateSubsRepositories }

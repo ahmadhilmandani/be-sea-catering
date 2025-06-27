@@ -12,6 +12,8 @@ app.use(express.urlencoded({ extended: true }))
 const authRoute = require('./src/routes/authRoute.js')
 const testimoniRouth = require('./src/routes/testimoniRoute.js')
 const orderMealRoute = require('./src/routes/orderMealRoute.js')
+const subscriptionRoute = require('./src/routes/subscriptionRoute.js')
+
 const { responseSuccesHandler } = require('./src/middleware/responseSuccesHandler.js')
 const { log } = require('./src/middleware/log')
 
@@ -23,6 +25,7 @@ app.use(log)
 app.use('/api/auth', authRoute)
 app.use('/api/testimoni', testimoniRouth)
 app.use('/api/order-meal', orderMealRoute)
+app.use('/api/subscription', subscriptionRoute)
 
 app.use(responseSuccesHandler)
 app.use(errorHanlder)
