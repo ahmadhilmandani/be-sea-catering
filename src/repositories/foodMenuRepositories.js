@@ -58,6 +58,7 @@ const getFoodMenuRepo = async (getLimit, dietType) => {
           desciption: foodMenu[0][index].description,
           diet: foodMenu[0][index].diet_type_name,
           nutrition: [],
+          recomended_for: foodMenu[0][index].recomended_for
         })
         
         const getNutritions = await connection.execute(sql_statement_nutritions, [foodMenu[0][index].id_food_menu])
