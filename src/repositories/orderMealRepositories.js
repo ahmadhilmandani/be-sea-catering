@@ -8,14 +8,13 @@ const getOrderMealRegistered = async (id_user, getLimit, isSend) => {
       SELECT
         om.id_order_meal,
         om.id_user,
-        om.name AS order_meal_name,
-        om.id_delivery_type,
+        om.id_meal_type,
         om.id_food_menu,
         om.is_send,
         om.deliver_date_schedule,
         om.created_at,
-        dt.day,
-        dt.time_string,
+        mt.name AS meal_type_name,
+        mt.estimate_time_int,
         u.name AS user_name,
         u.address,
         u.phone_number,
@@ -26,9 +25,9 @@ const getOrderMealRegistered = async (id_user, getLimit, isSend) => {
       FROM
         order_meal AS om
       INNER JOIN
-        devlivery_type AS dt
+        meal_type AS mt
       ON
-        om.id_delivery_type = dt.id_delivery_type
+        om.id_meal_type = mt.id_meal_type
       INNER JOIN
         users AS u
       ON
@@ -75,7 +74,8 @@ const getOrderMealRegistered = async (id_user, getLimit, isSend) => {
             'address': resOrderMeal[0][0].address,
             'phone_number': resOrderMeal[0][0].phone_number,
           },
-          'order': []
+          'order': [],
+          'must_deliver_date': resOrderMeal[0][0].deliver_date_schedule.toLocaleDateString('id-ID'),
         }
       ]
 
@@ -86,10 +86,9 @@ const getOrderMealRegistered = async (id_user, getLimit, isSend) => {
           'name': resOrderMeal[0][index].food_menu_name,
           'price': resOrderMeal[0][index].price,
           'description': resOrderMeal[0][index].description,
-          'delivery': {
-            'day': resOrderMeal[0][index].day,
-            'time': resOrderMeal[0][index].time_string,
-            'date_schedule': resOrderMeal[0][index].deliver_date_schedule,
+          'meal_type': {
+            'name': resOrderMeal[0][index].meal_type_name,
+            'estimate_time': resOrderMeal[0][index].estimate_time_int
           },
           'is_send': resOrderMeal[0][index].is_send,
           'nutritions': []
@@ -99,10 +98,10 @@ const getOrderMealRegistered = async (id_user, getLimit, isSend) => {
 
         for (let indexNutritions = 0; indexNutritions < resNutritions[0].length; indexNutritions++) {
           res[0].order[index].nutritions.push({
-              id_nutrition: resNutritions[0][indexNutritions].id_nutrition,
-              name: resNutritions[0][indexNutritions].name,
-              value: resNutritions[0][indexNutritions].value,
-              unit: resNutritions[0][indexNutritions].unit,
+            id_nutrition: resNutritions[0][indexNutritions].id_nutrition,
+            name: resNutritions[0][indexNutritions].name,
+            value: resNutritions[0][indexNutritions].value,
+            unit: resNutritions[0][indexNutritions].unit,
           })
         }
       }
@@ -117,7 +116,7 @@ const getOrderMealRegistered = async (id_user, getLimit, isSend) => {
   }
 }
 
-const postOrderMealRegistered = async (id_user, id_delivery_type, id_food_menu, deliver_date_schedule, is_send) => {
+const postOrderMealRegistered = async (id_user, id_meal_type, id_food_menu, deliver_date_schedule, is_send) => {
   const connection = await connectDb()
 
   try {
@@ -126,7 +125,7 @@ const postOrderMealRegistered = async (id_user, id_delivery_type, id_food_menu, 
         order_meal
         (
           id_user,
-          id_delivery_type,
+          id_meal_type,
           id_food_menu,
           deliver_date_schedule,
           is_send,
@@ -143,7 +142,7 @@ const postOrderMealRegistered = async (id_user, id_delivery_type, id_food_menu, 
         )
     `
 
-    const sqlParams = [id_user, id_delivery_type, id_food_menu, deliver_date_schedule, is_send, new Date()]
+    const sqlParams = [id_user, id_meal_type, id_food_menu, deliver_date_schedule, is_send, new Date()]
 
     const res = await connection.execute(sql_statement, sqlParams)
     return res
@@ -163,11 +162,12 @@ const getOrderMealUnregistered = async (phone_number, getLimit, isSend) => {
         om.name AS om_name,
         om.address AS om_address,
         om.phone_number AS om_phone_number,
-        om.id_delivery_type AS om_id_delivery_type,
-        devt.day AS devt_day,
-        devt.time_string AS devt_time_string,
+        om.id_meal_type AS id_meal_type,
         om.id_food_menu AS om_id_food_menu,
         om.is_send AS om_is_send,
+        om.deliver_date_schedule,
+        mt.name AS meal_type_name,
+        mt.estimate_time_int,
         fm.name AS fm_name,
         fm.price AS fm_price,
         fm.description AS fm_description,
@@ -175,9 +175,9 @@ const getOrderMealUnregistered = async (phone_number, getLimit, isSend) => {
       FROM
         order_meal AS om
       INNER JOIN
-        devlivery_type AS devt
+        meal_type AS mt
       ON
-        om.id_delivery_type = devt.id_delivery_type
+        om.id_meal_type = mt.id_meal_type
       INNER JOIN
         food_menu AS fm
       ON
@@ -201,7 +201,21 @@ const getOrderMealUnregistered = async (phone_number, getLimit, isSend) => {
     }
 
     const [res] = await connection.execute(sql_statement, sqlParams)
+    
     if (res.length > 0) {
+
+      let sql_statement_nutritions = `
+        SELECT
+          n.id_nutrition,
+          n.name,
+          n.value,
+          n.unit
+        FROM
+          nutritions AS n
+        WHERE
+          n.id_food_menu = ?
+      `
+
       let resp = [
         {
           'user': {
@@ -209,24 +223,36 @@ const getOrderMealUnregistered = async (phone_number, getLimit, isSend) => {
             'address': res[0].om_address,
             'phone_number': res[0].om_phone_number,
           },
-          'order_meals': []
+          'order': [],
         }
       ]
+
       for (let index = 0; index < res.length; index++) {
-        resp[0].order_meals.push({
+        resp[0].order.push({
           'id_order_meal': res[index].om_id_order_meal,
           'id_food_menu': res[index].om_id_food_menu,
           'name': res[index].fm_name,
           'price': res[index].fm_price,
           'description': res[index].fm_fm_description,
-          'delivery': {
-            'day': res[index].devt_day,
-            'time': res[index].devt_time_string
+          'meal_type': {
+            'name': res[index].meal_type_name,
+            'estimate_time': res[index].estimate_time_int
           },
           'is_send': res[index].om_is_send,
           'diet_type': res[index].dt_name,
-          'deliver_date_schedule': res[index].om_deliver_date_schedule,
+          'nutritions': [],
+          'must_deliver_date': res[index].deliver_date_schedule.toLocaleDateString('id-ID'),
         })
+        const resNutritions = await connection.execute(sql_statement_nutritions, [res[index].om_id_food_menu])
+
+        for (let indexNutritions = 0; indexNutritions < resNutritions[0].length; indexNutritions++) {
+          resp[0].order[index].nutritions.push({
+            id_nutrition: resNutritions[0][indexNutritions].id_nutrition,
+            name: resNutritions[0][indexNutritions].name,
+            value: resNutritions[0][indexNutritions].value,
+            unit: resNutritions[0][indexNutritions].unit,
+          })
+        }
       }
       return resp
     }
@@ -239,7 +265,7 @@ const getOrderMealUnregistered = async (phone_number, getLimit, isSend) => {
   }
 }
 
-const postOrderMealUnregistered = async (name, address, phone_number, id_delivery_type, id_food_menu, deliver_date_schedule) => {
+const postOrderMealUnregistered = async (name, address, phone_number, id_meal_type, id_food_menu, deliver_date_schedule) => {
   const connection = await connectDb()
 
   try {
@@ -250,7 +276,7 @@ const postOrderMealUnregistered = async (name, address, phone_number, id_deliver
           name,
           address,
           phone_number,
-          id_delivery_type,
+          id_meal_type,
           id_food_menu,
           deliver_date_schedule,
           is_send,
@@ -269,7 +295,7 @@ const postOrderMealUnregistered = async (name, address, phone_number, id_deliver
         )
     `
 
-    const sqlParams = [name, address, phone_number, id_delivery_type, id_food_menu, deliver_date_schedule, 0, new Date()]
+    const sqlParams = [name, address, phone_number, id_meal_type, id_food_menu, deliver_date_schedule, 0, new Date()]
 
     const res = await connection.execute(sql_statement, sqlParams)
     return res

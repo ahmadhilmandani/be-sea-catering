@@ -1,6 +1,8 @@
 const connectDb = require("../config/db.js")
 const { getOrderMealRegistered, postOrderMealRegistered, getOrderMealUnregistered, postOrderMealUnregistered } = require("../repositories/orderMealRepositories.js")
 
+
+
 const getOrderMealRegisteredC = async (req, res, next) => {
   const connection = await connectDb()
 
@@ -17,13 +19,15 @@ const getOrderMealRegisteredC = async (req, res, next) => {
   }
 }
 
+
+
 const postOrderMealRegisteredC = async (req, res, next) => {
   const connection = await connectDb()
 
   try {
-    const { id_user, id_delivery_type, id_food_menu, deliver_date_schedule, is_send } = req.body
+    const { id_user, id_meal_type, id_food_menu, deliver_date_schedule, is_send } = req.body
 
-    const [res] = await postOrderMealRegistered(id_user, id_delivery_type, id_food_menu, deliver_date_schedule, is_send)
+    const [res] = await postOrderMealRegistered(id_user, id_meal_type, id_food_menu, deliver_date_schedule, is_send)
     req.result = res
     next()
   } catch (error) {
@@ -32,6 +36,8 @@ const postOrderMealRegisteredC = async (req, res, next) => {
   }
 }
 
+
+
 const getOrderMealUnregisteredC = async (req, res, next) => {
   const connection = await connectDb()
 
@@ -39,7 +45,6 @@ const getOrderMealUnregisteredC = async (req, res, next) => {
     const phone_number = req.query?.phone_number || null
     const getLimit = req.query?.getLimit || null
     const isSend = req.query?.isSend || null
-
     const res = await getOrderMealUnregistered(phone_number, getLimit, isSend)
     req.result = res
     next()
@@ -49,12 +54,14 @@ const getOrderMealUnregisteredC = async (req, res, next) => {
   }
 }
 
+
+
 const postOrderMealUnregisteredC = async (req, res, next) => {
   const connection = connectDb()
 
   try {
-    const { name, address, phone_number, id_delivery_type, id_food_menu, deliver_date_schedule } = req.body
-    const res = await postOrderMealUnregistered(name, address, phone_number, id_delivery_type, id_food_menu, deliver_date_schedule)
+    const { name, address, phone_number, id_meal_type, id_food_menu, deliver_date_schedule } = req.body
+    const res = await postOrderMealUnregistered(name, address, phone_number, id_meal_type, id_food_menu, deliver_date_schedule)
     req.result = res
     next()
 
@@ -62,5 +69,6 @@ const postOrderMealUnregisteredC = async (req, res, next) => {
     throw new Error(error)
   }
 }
+
 
 module.exports = { getOrderMealRegisteredC, postOrderMealRegisteredC, getOrderMealUnregisteredC, postOrderMealUnregisteredC }
