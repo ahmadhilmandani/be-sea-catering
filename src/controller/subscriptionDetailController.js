@@ -25,7 +25,7 @@ const postSubsDetailController = async (req, res, next) => {
   try {
     const { id_user, id_diet_type, status_subs, food, delivery_days, total_bill } = req.body
 
-    const [resSubs] = await postSubsRepositories(id_user, id_diet_type, status_subs, 100)
+    const [resSubs] = await postSubsRepositories(id_user, id_diet_type, status_subs, total_bill)
 
     let resp
 
