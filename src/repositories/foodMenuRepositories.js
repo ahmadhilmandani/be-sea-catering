@@ -53,6 +53,7 @@ const getFoodMenuRepo = async (getLimit, dietType) => {
 
       for (let index = 0; index < foodMenu[0].length; index++) {
         res.push({
+          id_food_menu: foodMenu[0][index].id_food_menu,
           title: foodMenu[0][index].food_menu_name,
           price: foodMenu[0][index].price,
           desciption: foodMenu[0][index].description,

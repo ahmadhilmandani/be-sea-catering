@@ -1,73 +1,58 @@
 const connectDb = require('../config/db.js')
 
-const getSubsByUserIdRepositories = async (userId) => {
+const getSubsDeliveryDayBySubId = async (subId) => {
   const connection = await connectDb()
 
   try {
     let sql_statement = `
       SELECT
-        s.id_subscription,
-        s.id_user,
-        s.id_diet_type,
-        s.status_subs,
-        s.created_at,
-        u.name AS name,
-        u.phone_number,
-        dt.name AS diet_type_name,
-        dt.subs_diet_type_price_meal,
-        dt.description
+        dd.day
       FROM
-        subscriptions AS s
+        subs_delivery_days AS sdd
       INNER JOIN
-        users AS u
+        delivery_days AS dd
       ON
-        s.id_user = u.id_user
-      INNER JOIN
-        diet_type AS dt
-      ON
-        s.id_diet_type = dt.id_diet_type
+        sdd.id_delivery_day = dd.id_delivery_day 
       WHERE
-        s.id_user = ?
+        sdd.id_subscription = ?
     `
 
-    let sqlParams = [userId]
+    let sqlParams = [subId]
 
     const [res] = await connection.execute(sql_statement, sqlParams)
-    return res
+    return res.map((val) => {
+      return val.day
+    })
   } catch (error) {
     throw new Error(error)
   }
 }
 
 
-const postSubsRepositories = async (userId, id_diet_type, status_subs, total_bill) => {
+const postSubsDeliverDayRepositori = async (id_subscription, id_delivery_day) => {
   const connection = await connectDb()
 
   try {
     let sql_statement = `
       INSERT INTO
-        subscriptions
+        subs_delivery_days
         (
-          id_user,
-          id_diet_type,
-          status_subs,
-          total_bill,
-          created_at
+          id_subscription,
+          id_delivery_day
         )
         VALUES
         (
-          ?,
-          ?,
-          ?,
           ?,
           ?
         )
     `
 
-    let sqlParams = [userId, id_diet_type, status_subs, total_bill, new Date()]
+    let sqlParams = [id_subscription, id_delivery_day]
+
 
     const res = await connection.execute(sql_statement, sqlParams)
     return res
+
   } catch (error) {
     throw new Error(error)
   }
@@ -99,4 +84,4 @@ const updateSubsRepositories = async (id_subscription, id_diet_type, status_subs
 }
 
 
-module.exports = { getSubsByUserIdRepositories, postSubsRepositories, updateSubsRepositories }
+module.exports = { getSubsDeliveryDayBySubId, postSubsDeliverDayRepositori, updateSubsRepositories }

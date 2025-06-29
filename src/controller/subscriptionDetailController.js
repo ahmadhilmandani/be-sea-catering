@@ -1,14 +1,13 @@
 const connectDb = require('../config/db.js')
 const { getSubsDetailsByUserIdRepo, postSubsDetailsByUserIdRepo, updateSubsDetailsRepositories } = require('../repositories/subscriptionDetailRepositories.js')
 const { postSubsRepositories } = require('../repositories/subscriptionRepositories.js')
+const { postSubsDeliverDayRepositori } = require('../repositories/subsDeliverDaysRepositories.js')
 
 const getSubsDetailByUserIdController = async (req, res, next) => {
   const connection = await connectDb()
 
   try {
     const { userId } = req.params
-
-    console.log(userId)
 
     const [res] = await getSubsDetailsByUserIdRepo(userId)
     req.result = res
@@ -20,18 +19,22 @@ const getSubsDetailByUserIdController = async (req, res, next) => {
 }
 
 
-
 const postSubsDetailController = async (req, res, next) => {
   const connection = await connectDb()
 
   try {
-    const { id_user, id_diet_type, status_subs, food } = req.body
+    const { id_user, id_diet_type, status_subs, food, delivery_days, total_bill } = req.body
 
-    const [resSubs] = await postSubsRepositories(id_user, id_diet_type, status_subs)
+    const [resSubs] = await postSubsRepositories(id_user, id_diet_type, status_subs, 100)
 
     let resp
+
+    for (let index = 0; index < delivery_days.length; index++) {
+      await postSubsDeliverDayRepositori(resSubs.insertId, delivery_days[index].id_delivery_day)
+    }
+
     for (let index = 0; index < food.length; index++) {
-      resp = await postSubsDetailsByUserIdRepo(resSubs.insertId, food[index].id_food_menu, food[index].id_delivery_type, 0)
+      resp = await postSubsDetailsByUserIdRepo(resSubs.insertId, food[index].id_food_menu, food[index].id_meal_type, 0)
     }
 
     await connection.commit()
