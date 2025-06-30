@@ -5,8 +5,7 @@ const getFoodMenuController = async (req, res, next) => {
   const connection = await connectDb()
 
   try {
-    const { getLimit, dietType } = req.params
-
+    const { getLimit, dietType } = req.query
 
     const res = await getFoodMenuRepo(getLimit, dietType)
     

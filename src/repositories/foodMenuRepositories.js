@@ -27,7 +27,6 @@ const getFoodMenuRepo = async (getLimit, dietType) => {
     let sqlParams = []
     if (dietType) {
       sql_statement_food_menu = sql_statement_food_menu + ' WHERE fm.id_diet_type = ?'
-      sqlParams.push(dietType)
     }
     if (getLimit) {
       sql_statement_food_menu = sql_statement_food_menu + ' LIMIT ? '
