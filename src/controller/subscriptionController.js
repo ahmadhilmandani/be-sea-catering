@@ -41,8 +41,9 @@ const updateSubsController = async (req, res, next) => {
   try {
     const { idSubscription } = req.params
     const { id_diet_type, status_subs } = req.body
+    const {is_reactivation} = req.body == true ? true : null
 
-    const [res] = await updateSubsRepositories(idSubscription, id_diet_type, status_subs)
+    const [res] = await updateSubsRepositories(idSubscription, id_diet_type, status_subs, is_reactivation)
     req.result = res
     next()
   } catch (error) {

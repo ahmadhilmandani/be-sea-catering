@@ -74,7 +74,7 @@ const postSubsRepositories = async (userId, id_diet_type, status_subs, total_bil
 }
 
 
-const updateSubsRepositories = async (id_subscription, id_diet_type, status_subs) => {
+const updateSubsRepositories = async (id_subscription, id_diet_type, status_subs, is_reactivation) => {
   const connection = await connectDb()
 
   try {
@@ -84,12 +84,13 @@ const updateSubsRepositories = async (id_subscription, id_diet_type, status_subs
       SET
         id_diet_type = ?,
         status_subs = ?,
+        is_reactivation = ?,
         updated_at = ?
       WHERE
         id_subscription = ?
     `
 
-    let sqlParams = [id_diet_type, status_subs, new Date(), id_subscription]
+    let sqlParams = [id_diet_type, status_subs, new Date(), id_subscription, is_reactivation]
 
     const res = await connection.execute(sql_statement, sqlParams)
     return res
