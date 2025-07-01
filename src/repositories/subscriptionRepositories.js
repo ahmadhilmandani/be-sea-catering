@@ -107,12 +107,13 @@ const softDeleteSubsRepositories = async (id_subscription) => {
       UPDATE
         subscriptions
       SET
-        is_delete = 1
+        is_delete = 1,
+        updated_at = ?
       WHERE
         id_subscription = ?
     `
 
-    let sqlParams = [id_subscription]
+    let sqlParams = [new Date(), id_subscription]
 
     const res = await connection.execute(sql_statement, sqlParams)
     return res
