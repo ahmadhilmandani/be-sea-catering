@@ -7,12 +7,12 @@ Ini adalah repository backend dari website **SEA-Catering**, sebuah platform lay
 Ikuti langkah-langkah berikut untuk menjalankan backend ini di mesin lokal:
 
 1. Clone repository:
-   ```bash git clone https://github.com/ahmadhilmandani/be-sea-catering.git ```
+   ```git clone https://github.com/ahmadhilmandani/be-sea-catering.git ```
 
 
 3. Masuk ke folder project dan install dependency:
-   cd be-sea-catering
-   npm install
+   ```cd be-sea-catering```
+  ```npm install```
 
 
 4. Ubah nama file `.env.example` menjadi `.env`
