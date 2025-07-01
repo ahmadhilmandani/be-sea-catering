@@ -31,7 +31,7 @@ Ikuti langkah-langkah berikut untuk menjalankan backend ini di mesin lokal:
 Kamu bisa menggunakan tools seperti phpMyAdmin, MySQL Workbench, atau melalui perintah MySQL CLI.
 
 6. Jalankan server lokal:
-   npm run dev
+   ```npm run dev```
 
 7. Project siap digunakan. Web server akan berjalan di alamat default seperti `http://localhost:3000` (atau sesuai port pada `.env`).
 
