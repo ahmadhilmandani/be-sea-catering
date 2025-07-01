@@ -99,4 +99,27 @@ const updateSubsRepositories = async (id_subscription, id_diet_type, status_subs
 }
 
 
-module.exports = { getSubsByUserIdRepositories, postSubsRepositories, updateSubsRepositories }
+const softDeleteSubsRepositories = async (id_subscription) => {
+  const connection = await connectDb()
+
+  try {
+    let sql_statement = `
+      UPDATE
+        subscriptions
+      SET
+        is_delete = 1
+      WHERE
+        id_subscription = ?
+    `
+
+    let sqlParams = [id_subscription]
+
+    const res = await connection.execute(sql_statement, sqlParams)
+    return res
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+
+module.exports = { getSubsByUserIdRepositories, postSubsRepositories, updateSubsRepositories, softDeleteSubsRepositories }

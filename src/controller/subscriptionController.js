@@ -1,5 +1,5 @@
 const connectDb = require('../config/db.js')
-const { getSubsByUserIdRepositories, postSubsRepositories, updateSubsRepositories } = require('../repositories/subscriptionRepositories.js')
+const { getSubsByUserIdRepositories, postSubsRepositories, updateSubsRepositories, softDeleteSubsRepositories } = require('../repositories/subscriptionRepositories.js')
 
 const getSubsByUserIdController = async (req, res, next) => {
   const connection = await connectDb()
@@ -52,4 +52,20 @@ const updateSubsController = async (req, res, next) => {
 }
 
 
-module.exports = { getSubsByUserIdController, postSubsController, updateSubsController }
+const softDeleteSubsController = async (req, res, next) => {
+  const connection = await connectDb()
+
+  try {
+    const { idSubscription } = req.params
+
+    const [res] = await softDeleteSubsRepositories(idSubscription)
+    req.result = res
+    next()
+  } catch (error) {
+    await connection.rollback()
+    next(error)
+  }
+}
+
+
+module.exports = { getSubsByUserIdController, postSubsController, updateSubsController, softDeleteSubsController }

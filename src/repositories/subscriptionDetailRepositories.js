@@ -36,6 +36,8 @@ const getSubsDetailsByUserIdRepo = async (userId) => {
         sd.id_meal_type = mt.id_meal_type
       WHERE
         s.id_user = ?
+      AND
+        s.is_delete = 0
       ORDER BY
         created_at
       DESC
@@ -64,8 +66,7 @@ const getSubsDetailsByUserIdRepo = async (userId) => {
 
     const subsctiptionDetails = await connection.execute(sql_statement_subs_detail, sqlParams)
 
-
-    if (sql_statement_subs_detail.length > 0) {
+    if (subsctiptionDetails[0].length > 0) {
       const subDevDay = await getSubsDeliveryDayBySubId(subsctiptionDetails[0][0].id_subscription)
 
       let res = [
@@ -115,7 +116,7 @@ const getSubsDetailsByUserIdRepo = async (userId) => {
       return res
     }
 
-    return []
+    return [{}]
   } catch (error) {
     throw new Error(error)
   }
