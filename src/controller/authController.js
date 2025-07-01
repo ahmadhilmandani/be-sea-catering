@@ -44,6 +44,7 @@ const loginController = async (req, res, next) => {
       email: getUser[0].email,
       address: getUser[0].address,
       alergy: getUser[0].alergies,
+      is_admin: getUser[0].is_admin
     }
 
     const token = jwt.sign({ user: result }, "PASSWORD", { expiresIn: 86400 })
