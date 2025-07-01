@@ -90,7 +90,7 @@ const updateSubsRepositories = async (id_subscription, id_diet_type, status_subs
         id_subscription = ?
     `
 
-    let sqlParams = [id_diet_type, status_subs, new Date(), id_subscription, is_reactivation]
+    let sqlParams = [id_diet_type, status_subs, is_reactivation, new Date(), id_subscription]
 
     const res = await connection.execute(sql_statement, sqlParams)
     return res
