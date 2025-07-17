@@ -23,17 +23,10 @@ const { log } = require('./src/middleware/log')
 const { errorHanlder } = require('./src/middleware/errorHanlder')
 
 
+if (process.env.NODE_ENV != 'production') {
+  app.use(log)
+}
 
-app.use(log)
-
-app.use('/', (req, res) => {
-    return res.json(
-    {
-      'is_error': false,
-      'result': "Hello Word"
-    }
-  )
-})
 app.use('/api/auth', authRoute)
 app.use('/api/testimoni', testimoniRouth)
 app.use('/api/order-meal', orderMealRoute)
