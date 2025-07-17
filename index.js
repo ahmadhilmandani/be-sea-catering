@@ -25,6 +25,15 @@ const { errorHanlder } = require('./src/middleware/errorHanlder')
 
 
 app.use(log)
+
+app.use('/', (req, res) => {
+    return res.json(
+    {
+      'is_error': false,
+      'result': "Hello Word"
+    }
+  )
+})
 app.use('/api/auth', authRoute)
 app.use('/api/testimoni', testimoniRouth)
 app.use('/api/order-meal', orderMealRoute)
@@ -36,7 +45,7 @@ app.use('/api/admin/dashboard-data', adminDashboardRoute)
 app.use(responseSuccesHandler)
 app.use(errorHanlder)
 
-
-app.listen(3000, () => {
-  console.log(`running on http://localhost:3000`)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`running on http://localhost:${PORT}`)
 })
