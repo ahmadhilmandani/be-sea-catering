@@ -10,6 +10,7 @@ async function connectDb() {
         user: process.env.MARIADB_USER,
         password: process.env.MARIADB_PASS,
         database: process.env.MARIADB_NAME,
+        port: process.env.MARIADB_PORT,
         namedPlaceholders: true,
       }
     )
