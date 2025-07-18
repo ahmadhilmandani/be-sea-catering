@@ -6,10 +6,10 @@ async function connectDb() {
   if (!connection) {    
     connection =  await mysql.createConnection(
       {
-        host: process.env.MYSQL_HOST,
-        user: process.env.MYSQL_USERNAME,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DB,
+        host: process.env.MARIADB_HOST,
+        user: process.env.MARIADB_USER,
+        password: process.env.MARIADB_PASS,
+        database: process.env.MARIADB_NAME,
         namedPlaceholders: true,
       }
     )
