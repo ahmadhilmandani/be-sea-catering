@@ -27,6 +27,10 @@ if (process.env.NODE_ENV != 'production') {
   app.use(log)
 }
 
+app.get('/test', (req, res) => {
+  return res.send('hello, test')
+})
+
 app.use('/api/auth', authRoute)
 app.use('/api/testimoni', testimoniRouth)
 app.use('/api/order-meal', orderMealRoute)
