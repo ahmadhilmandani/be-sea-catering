@@ -42,7 +42,7 @@ app.use('/api/admin/dashboard-data', adminDashboardRoute)
 app.use(responseSuccesHandler)
 app.use(errorHanlder)
 
-const MARIADB_PORT = process.env.MARIADB_PORT || 3000;
-app.listen(MARIADB_PORT, () => {
-  console.log(`running on http://localhost:${MARIADB_PORT}`)
+const SERVER_PORT = process.env.SERVER_PORT || 3000;
+app.listen(SERVER_PORT, () => {
+  console.log(`running on http://localhost:${SERVER_PORT}`)
 })
