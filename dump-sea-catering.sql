@@ -37,7 +37,7 @@ CREATE TABLE `order_meal` (
   CONSTRAINT `order_meal_food_menu_FK` FOREIGN KEY (`id_food_menu`) REFERENCES `food_menu` (`id_food_menu`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `order_meal_meal_type_FK` FOREIGN KEY (`id_meal_type`) REFERENCES `meal_type` (`id_meal_type`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `order_meal_users_FK` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
 
 CREATE TABLE `subscriptions` (
@@ -55,7 +55,7 @@ CREATE TABLE `subscriptions` (
   KEY `subscriptions_users_FK` (`id_user`),
   CONSTRAINT `subscriptions_diet_type_FK` FOREIGN KEY (`id_diet_type`) REFERENCES `diet_type` (`id_diet_type`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `subscriptions_users_FK` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Table structure for table `delivery_days`
@@ -71,7 +71,7 @@ CREATE TABLE `delivery_days` (
   `updated_at` date DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id_delivery_day`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +97,7 @@ CREATE TABLE `diet_type` (
   `updated_at` date DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id_diet_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,7 +127,7 @@ CREATE TABLE `food_menu` (
   PRIMARY KEY (`id_food_menu`),
   KEY `food_menu_diet_type_FK` (`id_diet_type`),
   CONSTRAINT `food_menu_diet_type_FK` FOREIGN KEY (`id_diet_type`) REFERENCES `diet_type` (`id_diet_type`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +152,7 @@ CREATE TABLE `meal_type` (
   `updated_at` date DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id_meal_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,7 +181,7 @@ CREATE TABLE `nutritions` (
   PRIMARY KEY (`id_nutrition`),
   KEY `food_menu_diet_type_FK` (`id_food_menu`) USING BTREE,
   CONSTRAINT `nutritions_food_menu_FK` FOREIGN KEY (`id_food_menu`) REFERENCES `food_menu` (`id_food_menu`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -216,7 +216,7 @@ CREATE TABLE `subs_delivery_days` (
   KEY `subscriptions_users_FK` (`id_subscription`) USING BTREE,
   CONSTRAINT `subs_delivery_days_delivery_days_FK` FOREIGN KEY (`id_delivery_day`) REFERENCES `delivery_days` (`id_delivery_day`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `subs_delivery_days_subscriptions_FK` FOREIGN KEY (`id_subscription`) REFERENCES `subscriptions` (`id_subscription`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -258,7 +258,7 @@ CREATE TABLE `subscriptions_detail` (
   CONSTRAINT `subscriptions_detail_food_menu_FK` FOREIGN KEY (`id_food_menu`) REFERENCES `food_menu` (`id_food_menu`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `subscriptions_detail_meal_type_FK` FOREIGN KEY (`id_meal_type`) REFERENCES `meal_type` (`id_meal_type`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `subscriptions_detail_subscriptions_FK` FOREIGN KEY (`id_subscription`) REFERENCES `subscriptions` (`id_subscription`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -284,7 +284,7 @@ CREATE TABLE `testimonies` (
   `created_at` datetime DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id_testimoni`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,7 +315,7 @@ CREATE TABLE `users` (
   `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `users_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

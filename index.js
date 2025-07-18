@@ -22,6 +22,8 @@ const { log } = require('./src/middleware/log')
 
 const { errorHanlder } = require('./src/middleware/errorHanlder')
 
+const helmet = require('helmet');
+app.use(helmet());
 
 if (process.env.NODE_ENV != 'production') {
   app.use(log)

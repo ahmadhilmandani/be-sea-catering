@@ -1,5 +1,5 @@
 "id_diet_type","name","subs_diet_type_price_meal","description","created_at","updated_at","is_delete"
-2,balance diet plan,35000.00,Diet dengan gizi seimbang sesuai panduan KEMENKES,"2025-06-26 04:07:04",,0
-3,low calorie diet plan,30000.00,"Cocok untuk penurunan berat badan, rendah kalori.","2025-06-26 04:07:04",,0
-4,high protein diet plan,40000.00,Fokus pada makanan tinggi protein (biasanya untuk membentuk otot).,"2025-06-26 04:07:04",,0
-5,royal diet plan,60000.00,"Menu premium, porsinya lebih besar dan bahan lebih eksklusif.","2025-06-26 04:07:04",,0
+2,balance diet plan,35000.00,Diet dengan gizi seimbang sesuai panduan KEMENKES,"2025-06-26 04:07:04",NULL,0
+3,low calorie diet plan,30000.00,"Cocok untuk penurunan berat badan, rendah kalori.","2025-06-26 04:07:04",NULL,0
+4,high protein diet plan,40000.00,Fokus pada makanan tinggi protein (biasanya untuk membentuk otot).,"2025-06-26 04:07:04",NULL,0
+5,royal diet plan,60000.00,"Menu premium, porsinya lebih besar dan bahan lebih eksklusif.","2025-06-26 04:07:04",NULL,0
