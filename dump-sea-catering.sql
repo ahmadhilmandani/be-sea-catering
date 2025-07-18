@@ -20,9 +20,9 @@
 CREATE TABLE `order_meal` (
   `id_order_meal` int NOT NULL AUTO_INCREMENT,
   `id_user` int DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `phone_number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `address` text CHARACTER SET utf8mb4,
+  `phone_number` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
   `id_meal_type` int DEFAULT NULL,
   `id_food_menu` int DEFAULT NULL,
   `is_send` tinyint(1) DEFAULT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `subscriptions` (
   `id_subscription` int NOT NULL AUTO_INCREMENT,
   `id_user` int DEFAULT NULL,
   `id_diet_type` int DEFAULT NULL,
-  `status_subs` enum('pending','active','canceled') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `status_subs` enum('pending','active','canceled') CHARACTER SET utf8mb4 DEFAULT NULL,
   `total_bill` decimal(10,2) DEFAULT NULL,
   `is_reactivation` enum('1') DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -66,7 +66,7 @@ DROP TABLE IF EXISTS `delivery_days`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `delivery_days` (
   `id_delivery_day` int NOT NULL AUTO_INCREMENT,
-  `day` enum('senin','selasa','rabu','kamis','jumat','sabtu','minggu') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `day` enum('senin','selasa','rabu','kamis','jumat','sabtu','minggu') CHARACTER SET utf8mb4 DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` date DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT '0',
@@ -90,9 +90,9 @@ DROP TABLE IF EXISTS `diet_type`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `diet_type` (
   `id_diet_type` int NOT NULL AUTO_INCREMENT,
-  `name` enum('balance diet plan','low calorie diet plan','high protein diet plan','royal diet plan') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `name` enum('balance diet plan','low calorie diet plan','high protein diet plan','royal diet plan') CHARACTER SET utf8mb4 DEFAULT NULL,
   `subs_diet_type_price_meal` decimal(10,2) DEFAULT NULL,
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` date DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT '0',
@@ -117,10 +117,10 @@ DROP TABLE IF EXISTS `food_menu`;
 CREATE TABLE `food_menu` (
   `id_food_menu` int NOT NULL AUTO_INCREMENT,
   `id_diet_type` int DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `price` double DEFAULT NULL,
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `recomended_for` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `description` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `recomended_for` text CHARACTER SET utf8mb4,
   `created_at` datetime DEFAULT NULL,
   `updated_at` date DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT '0',
@@ -146,8 +146,8 @@ DROP TABLE IF EXISTS `meal_type`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `meal_type` (
   `id_meal_type` int NOT NULL AUTO_INCREMENT,
-  `name` enum('sarapan','makan siang','makan malam') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `estimate_time_int` enum('5.30 - 8.00 WIB','11.30 - 13.45 WIB','18.00 - 21.00 WIB') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `name` enum('sarapan','makan siang','makan malam') CHARACTER SET utf8mb4 DEFAULT NULL,
+  `estimate_time_int` enum('5.30 - 8.00 WIB','11.30 - 13.45 WIB','18.00 - 21.00 WIB') CHARACTER SET utf8mb4 DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` date DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT '0',
@@ -172,9 +172,9 @@ DROP TABLE IF EXISTS `nutritions`;
 CREATE TABLE `nutritions` (
   `id_nutrition` int NOT NULL AUTO_INCREMENT,
   `id_food_menu` int DEFAULT NULL,
-  `name` enum('protein','kalori','lemak','gula','karbohidrat','serat') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `name` enum('protein','kalori','lemak','gula','karbohidrat','serat') CHARACTER SET utf8mb4 DEFAULT NULL,
   `value` decimal(10,2) DEFAULT NULL,
-  `unit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `unit` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` date DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT '0',
@@ -277,9 +277,9 @@ DROP TABLE IF EXISTS `testimonies`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `testimonies` (
   `id_testimoni` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `testimoni` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `name` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `address` text CHARACTER SET utf8mb4,
+  `testimoni` text CHARACTER SET utf8mb4,
   `star` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT '0',
@@ -303,12 +303,12 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id_user` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `phone_number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `alergies` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `name` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `password` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `phone_number` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `address` text CHARACTER SET utf8mb4,
+  `alergies` text CHARACTER SET utf8mb4,
   `is_admin` tinyint(1) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` date DEFAULT NULL,
