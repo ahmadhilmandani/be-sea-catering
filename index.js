@@ -6,7 +6,7 @@ require('dotenv').config()
 
 const cors = require('cors')
 
-if (process.env.NODE_ENV != 'production') {
+if (process.env.APP_MODE != 'production') {
   app.use(cors({
     origin: 'https://fe-sea-catering.netlify.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -35,7 +35,7 @@ const { errorHanlder } = require('./src/middleware/errorHanlder')
 const helmet = require('helmet');
 app.use(helmet());
 
-if (process.env.NODE_ENV != 'production') {
+if (process.env.APP_MODE != 'production') {
   app.use(log)
 }
 
