@@ -7,15 +7,15 @@ require('dotenv').config()
 const cors = require('cors')
 
 
-if (process.env.APP_MODE == 'production') {
-  app.use(cors({
-    origin: 'https://fe-sea-catering.netlify.app',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-  }));
-} else {
+// if (process.env.APP_MODE == 'production') {
+//   app.use(cors({
+//     origin: 'https://fe-sea-catering.netlify.app/',
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     credentials: true
+//   }));
+// } else {
   app.use(cors())
-}
+// }
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
