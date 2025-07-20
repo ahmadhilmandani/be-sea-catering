@@ -8,7 +8,7 @@ const cors = require('cors')
 
 if (process.env.NODE_ENV != 'production') {
   app.use(cors({
-    origin: 'https://fe-sea-catering.netlify.app/',
+    origin: 'https://fe-sea-catering.netlify.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   }));
