@@ -6,6 +6,7 @@ require('dotenv').config()
 
 const cors = require('cors')
 
+
 if (process.env.APP_MODE == 'production') {
   app.use(cors({
     origin: 'https://fe-sea-catering.netlify.app',
