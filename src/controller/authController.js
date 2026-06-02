@@ -65,12 +65,10 @@ const getUserInfo = async (req, res, next) => {
   const connection = await connectDb();
 
   try {
-    const token = req.headers['authorization']
+    const userInfo = req.userInfo
 
-    const decodeToken = jwt.verify(token.replace('Bearer ', ''), "PASSWORD")
-
-    if (token) {
-      req.result = decodeToken
+    if (userInfo) {
+      req.result = userInfo
       next()
     }
 

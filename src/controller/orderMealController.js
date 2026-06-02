@@ -1,5 +1,10 @@
 const connectDb = require("../config/db.js")
-const { getOrderMealRegistered, postOrderMealRegistered, getOrderMealUnregistered, postOrderMealUnregistered } = require("../repositories/orderMealRepositories.js")
+const {
+  getOrderMealRegistered,
+  postOrderMealRegistered,
+  getOrderMealUnregistered,
+  postOrderMealUnregistered
+} = require("../repositories/orderMealRepositories.js")
 
 
 
@@ -7,7 +12,7 @@ const getOrderMealRegisteredC = async (req, res, next) => {
   const connection = await connectDb()
 
   try {
-    const id_user = req.query?.id_user || null
+    const id_user = req.userInfo.user.user_id
     const getLimit = req.query?.getLimit || null
     const isSend = req.query?.isSend || null
 
@@ -71,4 +76,9 @@ const postOrderMealUnregisteredC = async (req, res, next) => {
 }
 
 
-module.exports = { getOrderMealRegisteredC, postOrderMealRegisteredC, getOrderMealUnregisteredC, postOrderMealUnregisteredC }
+module.exports = {
+  getOrderMealRegisteredC,
+  postOrderMealRegisteredC,
+  getOrderMealUnregisteredC,
+  postOrderMealUnregisteredC
+}

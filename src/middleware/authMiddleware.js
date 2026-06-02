@@ -16,7 +16,7 @@ const checkToken = async (req, res, next) => {
     }
 
     const decodeToken = jwt.verify(token.replace('Bearer ', ''), "PASSWORD")
-
+    req.userInfo = decodeToken
     next()
   } catch (error) {
     next(error)

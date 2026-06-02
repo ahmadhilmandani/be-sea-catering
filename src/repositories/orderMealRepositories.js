@@ -37,7 +37,7 @@ const getOrderMealRegistered = async (id_user, getLimit, isSend) => {
       ON
         om.id_food_menu = fm.id_food_menu
       WHERE
-        om.id_user
+        om.id_user = ?
     `
     let sqlParams = [id_user]
     if (isSend) {
@@ -74,8 +74,7 @@ const getOrderMealRegistered = async (id_user, getLimit, isSend) => {
             'address': resOrderMeal[0][0].address,
             'phone_number': resOrderMeal[0][0].phone_number,
           },
-          'order': [],
-          'must_deliver_date': resOrderMeal[0][0].deliver_date_schedule.toLocaleDateString('id-ID'),
+          'order': []
         }
       ]
 
@@ -91,7 +90,9 @@ const getOrderMealRegistered = async (id_user, getLimit, isSend) => {
             'estimate_time': resOrderMeal[0][index].estimate_time_int
           },
           'is_send': resOrderMeal[0][index].is_send,
-          'nutritions': []
+          'nutritions': [],
+          'must_deliver_date': resOrderMeal[0][index].deliver_date_schedule.toLocaleDateString('id-ID'),
+
         })
 
         const resNutritions = await connection.execute(sql_statement_nutritions, [resOrderMeal[0][index].id_food_menu])
