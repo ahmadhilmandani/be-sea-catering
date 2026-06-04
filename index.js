@@ -7,15 +7,15 @@ require('dotenv').config()
 const cors = require('cors')
 
 
-// if (process.env.APP_MODE == 'production') {
-//   app.use(cors({
-//     origin: 'https://fe-sea-catering.netlify.app',
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     credentials: true
-//   }));
-// } else {
+if (process.env.app_env == 'production') {
+  app.use(cors({
+    origin: 'https://fe-sea-catering.netlify.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+  }));
+} else {
   app.use(cors())
-// }
+}
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -36,13 +36,10 @@ const { errorHanlder } = require('./src/middleware/errorHanlder')
 const helmet = require('helmet');
 app.use(helmet());
 
-if (process.env.APP_MODE != 'production') {
+if (process.env.app_env != 'production') {
   app.use(log)
 }
 
-app.get('/test', (req, res) => {
-  return res.send('hello, test')
-})
 
 app.use('/api/auth', authRoute)
 app.use('/api/testimoni', testimoniRouth)
