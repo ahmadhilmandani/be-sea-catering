@@ -26,6 +26,260 @@ Before setting up the API, make sure you have:
 
 ---
 
+## 🗄️ Database Schema Overview
+
+The application uses a MySQL relational database consisting of several interconnected tables to manage users, meal orders, subscriptions, food menus, and delivery schedules.
+
+### Main Entities
+
+#### Users
+
+Stores customer and administrator accounts.
+
+| Column       | Description              |
+| ------------ | ------------------------ |
+| id_user      | Primary key              |
+| name         | User full name           |
+| email        | Unique email address     |
+| password     | Hashed password          |
+| phone_number | Contact number           |
+| address      | User address             |
+| alergies     | Food allergy information |
+| is_admin     | Admin flag               |
+
+---
+
+#### Diet Types
+
+Defines subscription meal plans available for customers.
+
+Available plans:
+
+* Balance Diet Plan
+* Low Calorie Diet Plan
+* High Protein Diet Plan
+* Royal Diet Plan
+
+Each plan contains:
+
+* Name
+* Description
+* Price per meal
+
+---
+
+#### Food Menu
+
+Stores available meals offered by SEA Catering.
+
+Each menu item belongs to a diet type and contains:
+
+* Menu name
+* Price
+* Description
+* Recommended target customers
+
+Relationship:
+
+```text
+Diet Type (1) ──── (N) Food Menu
+```
+
+---
+
+#### Nutrition Information
+
+Stores nutritional values for each menu item.
+
+Supported nutrition categories:
+
+* Protein
+* Calories
+* Fat
+* Sugar
+* Carbohydrates
+* Fiber
+
+Relationship:
+
+```text
+Food Menu (1) ──── (N) Nutritions
+```
+
+---
+
+#### Meal Types
+
+Defines meal delivery categories.
+
+Available meal types:
+
+| Meal Type | Delivery Time     |
+| --------- | ----------------- |
+| Breakfast | 05:30 - 08:00 WIB |
+| Lunch     | 11:30 - 13:45 WIB |
+| Dinner    | 18:00 - 21:00 WIB |
+
+---
+
+### Order Management
+
+#### Order Meal
+
+Represents one-time meal orders made by users.
+
+Stores:
+
+* Customer information
+* Delivery address
+* Selected menu
+* Meal type
+* Delivery date
+* Delivery status
+
+Relationship:
+
+```text
+User (1) ──── (N) Order Meal
+Food Menu (1) ──── (N) Order Meal
+Meal Type (1) ──── (N) Order Meal
+```
+
+---
+
+### Subscription Management
+
+#### Subscriptions
+
+Stores recurring meal subscription plans purchased by users.
+
+Subscription statuses:
+
+* pending
+* active
+* canceled
+
+Each subscription belongs to:
+
+* One user
+* One diet plan
+
+Relationship:
+
+```text
+User (1) ──── (N) Subscriptions
+Diet Type (1) ──── (N) Subscriptions
+```
+
+---
+
+#### Subscription Details
+
+Stores meal schedules included in a subscription.
+
+Each record references:
+
+* Subscription
+* Food Menu
+* Meal Type
+
+Relationship:
+
+```text
+Subscription (1) ──── (N) Subscription Details
+```
+
+---
+
+#### Delivery Days
+
+Stores available delivery days.
+
+Supported values:
+
+* Monday
+* Tuesday
+* Wednesday
+* Thursday
+* Friday
+* Saturday
+* Sunday
+
+---
+
+#### Subscription Delivery Days
+
+Bridge table used to associate subscriptions with selected delivery days.
+
+Relationship:
+
+```text
+Subscriptions (N) ──── (N) Delivery Days
+```
+
+Implemented through:
+
+```text
+subs_delivery_days
+```
+
+---
+
+### Testimonials
+
+Stores customer reviews and ratings.
+
+Contains:
+
+* Customer name
+* Address
+* Testimonial message
+* Star rating
+
+Used for displaying customer feedback on the frontend.
+
+---
+
+### Entity Relationship Summary
+
+```text
+Users
+ ├── Order Meal
+ └── Subscriptions
+       ├── Subscription Details
+       │      ├── Food Menu
+       │      └── Meal Type
+       └── Subscription Delivery Days
+               └── Delivery Days
+
+Diet Type
+ ├── Food Menu
+ └── Subscriptions
+
+Food Menu
+ └── Nutritions
+
+Testimonials
+```
+
+### Soft Delete Strategy
+
+Most tables implement a soft delete mechanism using:
+
+```sql
+is_delete TINYINT(1) DEFAULT 0
+```
+
+Values:
+
+* 0 = Active record
+* 1 = Deleted record
+
+This allows records to be hidden from application queries without permanently removing data from the database.
+
+
+---
+
 ## 🛠️ Installation & Setup
 
 1.  **Clone the Repository:**
