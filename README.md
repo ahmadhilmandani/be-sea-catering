@@ -1,58 +1,82 @@
-# SEA-Catering (Backend)
+# SEA Catering - Backend API
 
-Ini adalah repository backend dari website **SEA-Catering**, sebuah platform layanan katering sehat yang mendukung berbagai jenis diet, pemesanan makanan, dan sistem langganan yang fleksibel. Backend ini dibangun menggunakan **Express (Node.js)** dan menggunakan **MySQL** sebagai basis data.
+The backend RESTful API server for **SEA Catering**. Built on top of **Node.js** using the **Express.js** framework, this application securely handles authentication, database persistence, business rules, and order processing workflows.
 
-## Cara Menjalankan di Lokal
+## 🚀 Tech Stack & Core Libraries
 
-Ikuti langkah-langkah berikut untuk menjalankan backend ini di mesin lokal:
-
-1. Clone repository:
-   ```git clone https://github.com/ahmadhilmandani/be-sea-catering.git ```
-
-
-3. Masuk ke folder project dan install dependency:
-   ```cd be-sea-catering```
-  ```npm install```
-
-
-4. Ubah nama file `.env.example` menjadi `.env`
-
-
-5. Setup database MySQL:
-- Buat database baru di MySQL dengan nama **`sea-catering`** (nama harus persis sama).
-- Import struktur dan data awal dari file **`dump-sea-catering.sql`** ke database tersebut.
-
-5. Import data tambahan ke tabel:
-- Import file **`delivery_days-table.csv`** ke tabel `delivery_days`
-- Import file **`diet_type-table.csv`** ke tabel `diet_type`
-- Import file **`meal_type-table.csv`** ke tabel `meal_type`
-- Import file **`users-table.csv`** ke tabel `users`
-
-Kamu bisa menggunakan tools seperti phpMyAdmin, MySQL Workbench, atau melalui perintah MySQL CLI.
-
-6. Jalanakan MYSQL lalu Jalankan server lokal dengan cara:
-   ```npm run dev```
-
-7. Project siap digunakan. Web server akan berjalan di alamat default seperti `http://localhost:3000` (atau sesuai port pada `.env`).
-
-## Akun Pengguna Default
-
-Tersedia 2 akun pengguna untuk pengujian:
-
-- **Admin**
-- Email: `admin@sea.com`
-- Password: `Admin@123`
-
-- **User Biasa**
-- Email: `hilman@g.com`
-- Password: `Hilman@123`
-
-Silakan gunakan kredensial ini untuk login dari frontend dan menguji fitur sesuai peran masing-masing.
-
-## Catatan Penting
-
-- Backend ini menggunakan format REST API.
-- Jangan lupa untuk memastikan **MySQL** berjalan sebelum menjalankan server.
+* **Runtime Environment:** [Node.js](https://nodejs.org/) (Asynchronous event-driven JavaScript runtime)
+* **Web Framework:** [Express.js](https://expressjs.com/) (Minimalist and flexible web framework for building APIs)
+* **Database :**  [MySQL](https://www.mysql.com/) 
+* **Authentication & Security:**
+    * [JSON Web Tokens (JWT)](https://jwt.io/) – Secure, stateless session tokens
+    * [bcryptjs](https://www.npmjs.com/package/bcryptjs) – Password hashing and encryption
+    * [Helmet](https://helmetjs.github.io/) – Secures HTTP headers against common vulnerabilities
+    * [CORS](https://www.npmjs.com/package/cors) – Configured to allow secure cross-origin requests from the Vite frontend
+* **Utilities & Logging:**
+    * [dotenv](https://www.npmjs.com/package/dotenv) – Zero-dependency module that loads environment variables
+    * [Nodemon](https://nodemon.io/) – Automatically restarts the server during development on file changes
 
 ---
 
+## 📋 Prerequisites
+
+Before setting up the API, make sure you have:
+* **Node.js** (v18.x or v20.x)
+* **Database connection instance** (e.g., mysql2, MongoDB Atlas string or a local database instance running)
+
+---
+
+## 🛠️ Installation & Setup
+
+1.  **Clone the Repository:**
+    ```bash
+    git clone [https://github.com/ahmadhilmandani/be-sea-catering.git](https://github.com/ahmadhilmandani/be-sea-catering.git)
+    cd be-sea-catering
+    ```
+
+2.  **Install Dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Configure Environment Variables:**
+    Duplicate the environment variable file and complete your local credentials:
+    ```bash
+    cp .env.example .env
+    ```
+    Open `.env` and fill in your local port, secret keys, and database URI.
+
+4.  **Run the Server:**
+
+    * **Development Mode (With auto-reload via Nodemon):**
+        ```bash
+        npm run dev
+        ```
+    * **Production Mode:**
+        ```bash
+        npm start
+        ```
+    The server will typically spin up at [http://localhost:3000](http://localhost:3000).
+
+---
+
+## 🔑 Environment Variables
+
+Create a `.env` file in the root directory with the following structure:
+
+```env
+# Server Configuration
+PORT=5000
+NODE_ENV=development
+
+# Security & CORS Setup
+# Match this to your Vite frontend URL to prevent CORS violations
+CORS_ORIGIN=http://localhost:5173
+
+# Database Configuration
+# Swap out with your actual MongoDB connection URI or DB URL
+DATABASE_URL=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/sea_catering?retryWrites=true&w=majority
+
+# Authentication Secrets
+JWT_SECRET=your_super_secret_jwt_sign_key_change_in_production
+JWT_EXPIRES_IN=7d
