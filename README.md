@@ -6,7 +6,7 @@ The backend RESTful API server for **SEA Catering**. Built on top of **Node.js**
 
 * **Runtime Environment:** [Node.js](https://nodejs.org/) (Asynchronous event-driven JavaScript runtime)
 * **Web Framework:** [Express.js](https://expressjs.com/) (Minimalist and flexible web framework for building APIs)
-* **Database & ODM/ORM:** * [MongoDB](https://www.mongodb.com/) with [Mongoose](https://mongoosejs.com/) *(or PostgreSQL/Prisma—update based on your exact DB)*
+* **Database :**  [MySQL](https://www.mysql.com/) 
 * **Authentication & Security:**
     * [JSON Web Tokens (JWT)](https://jwt.io/) – Secure, stateless session tokens
     * [bcryptjs](https://www.npmjs.com/package/bcryptjs) – Password hashing and encryption
@@ -14,7 +14,6 @@ The backend RESTful API server for **SEA Catering**. Built on top of **Node.js**
     * [CORS](https://www.npmjs.com/package/cors) – Configured to allow secure cross-origin requests from the Vite frontend
 * **Utilities & Logging:**
     * [dotenv](https://www.npmjs.com/package/dotenv) – Zero-dependency module that loads environment variables
-    * [Morgan](https://www.npmjs.com/package/morgan) – HTTP request logger middleware for node.js
     * [Nodemon](https://nodemon.io/) – Automatically restarts the server during development on file changes
 
 ---
@@ -23,7 +22,7 @@ The backend RESTful API server for **SEA Catering**. Built on top of **Node.js**
 
 Before setting up the API, make sure you have:
 * **Node.js** (v18.x or v20.x)
-* **Database connection instance** (e.g., MongoDB Atlas string or a local database instance running)
+* **Database connection instance** (e.g., mysql2, MongoDB Atlas string or a local database instance running)
 
 ---
 
@@ -57,7 +56,7 @@ Before setting up the API, make sure you have:
         ```bash
         npm start
         ```
-    The server will typically spin up at [http://localhost:5000](http://localhost:5000).
+    The server will typically spin up at [http://localhost:3000](http://localhost:3000).
 
 ---
 
